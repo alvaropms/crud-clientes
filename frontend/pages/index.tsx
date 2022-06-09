@@ -1,8 +1,10 @@
 import type { NextPage } from 'next'
+import FormUsuario from '../components/formUsuario'
 
 const Login: NextPage = () => {
+
   return (
-  <h1>Hello World!</h1>
+    <FormUsuario isLogin={true}/>
   )
 }
 
