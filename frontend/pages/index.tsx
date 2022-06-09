@@ -4,7 +4,7 @@ import FormUsuario from '../components/formUsuario'
 const Login: NextPage = () => {
 
   return (
-    <FormUsuario isLogin={true}/>
+    <FormUsuario page={'login'}/>
   )
 }
 

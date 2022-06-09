@@ -11,6 +11,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ClienteDTO  implements Serializable{
     String nome;
-    Integer numero;
-
+    String email;
+    String senha;
 }

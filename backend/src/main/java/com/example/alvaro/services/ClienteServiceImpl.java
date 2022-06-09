@@ -1,5 +1,7 @@
 package com.example.alvaro.services;
 
+import com.example.alvaro.dtos.ClienteDTO;
+import com.example.alvaro.mapper.cliente.ClienteMapper;
 import com.example.alvaro.models.Cliente;
 import com.example.alvaro.repositorys.ClienteRepository;
 import com.example.alvaro.services.interfaces.ClienteService;
@@ -7,31 +9,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private ClienteMapper clienteMapper;
 
     @Override
-    public List<Cliente> getAllClientes() {
-        return clienteRepository.findAll();
+    public List<ClienteDTO> getAllClientes() {
+        List<Cliente> entity = clienteRepository.findAll();
+        List<ClienteDTO> dto = clienteMapper.toDto(entity);
+        return dto;
     }
 
     @Override
-    public List<Cliente> getClienteByNome(String nome) {
-        return clienteRepository.findByNome(nome);
+    public List<ClienteDTO> getClienteByNome(String nome) {
+        List<Cliente> entity = clienteRepository.findByNome(nome);
+        List<ClienteDTO> dto = clienteMapper.toDto(entity);
+        return dto;
     }
 
     @Override
-    public void deleteCliente(String nome) {
-        List<Cliente> clientes = clienteRepository.findByNome(nome);
+    public void deleteCliente(Long id) {
+        List<Cliente> clientes = clienteRepository.findAllById(id);
         clienteRepository.delete(clientes.get(0));
     }
 
     @Override
-    public void cadastrar(Cliente cliente) {
-        clienteRepository.save(cliente);
+    public void cadastrar(ClienteDTO dto) {
+        Cliente entity = clienteMapper.toEntity(dto);
+        clienteRepository.save(entity);
     }
 }

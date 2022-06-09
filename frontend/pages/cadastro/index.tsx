@@ -3,7 +3,7 @@ import FormUsuario from "../../components/formUsuario";
 
 const Cadastro: NextPage = () => {
     return(
-        <FormUsuario isLogin={false}/>
+        <FormUsuario page={'register'}/>
     )
 }
 

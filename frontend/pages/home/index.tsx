@@ -1,7 +1,25 @@
 import type { NextPage } from "next"
+import { useEffect, useState } from "react"
+import ClientRow from "../../components/clientRow"
+import FormUsuario from "../../components/formUsuario"
 import Navbar from "../../components/navbar"
+import { Cliente } from "../../models/client.model"
+import services from "../../services"
 
 const Home: NextPage = () => {
+
+    const [clientes, setCliente] = useState<Cliente[]>([])
+    const [edit, setEdit] = useState(-1)
+
+    useEffect(() => {
+        services.listar().then((resp) => {
+            setCliente(resp)
+        }).catch((error) => {
+            alert("Erro ao buscar clientes")
+            alert(error)
+        })
+    }, [])
+
     return(
         <>
         <Navbar/>
@@ -18,25 +36,15 @@ const Home: NextPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                    <td>João</td>
-                    <td>joao@joao.com</td>
-                    <td align="center">
-                        <button type="button" className="btn btn-primary">Editar</button>
-                        <button type="button" className="btn btn-danger ms-4">Excluir</button>
-                    </td>
-                    </tr>
-
-                    <tr>
-                    <td>João</td>
-                    <td>joao@joao.com</td>
-                    <td align="center">
-                        <button type="button" className="btn btn-primary">Editar</button>
-                        <button type="button" className="btn btn-danger ms-4">Excluir</button>
-                    </td>
-                    </tr>
+                    {
+                        clientes.map(cliente => <ClientRow key={cliente.id} cliente={cliente} setEdit={setEdit}/>)
+                    }
                 </tbody>
             </table>
+            {
+                edit < 0 ? null :
+                <FormUsuario page={'edit'} cliente={clientes.find((cliente => cliente.id === edit))} setEdit={setEdit}/>
+            }
         </div>
         </>
     )

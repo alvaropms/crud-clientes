@@ -1,38 +1,75 @@
 import type { NextPage } from "next"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { Cliente } from "../../models/client.model"
 
-const FormUsuario: NextPage<{isLogin: boolean}> = ({isLogin}) => {
+const FormUsuario: NextPage<{page: String, cliente?: Cliente, setEdit?: Function}> = (props) => {
+
+  const cliente = props.cliente
+
+  let isLogin: boolean = false
+  let isEdit: boolean = false
+
+  switch (props.page.toLowerCase()) {
+    case 'login':
+      isLogin = true
+      break
+    case 'edit':
+      isEdit = true
+    default:
+      break
+  }
+
+  const router = useRouter()
 
     return(
-        <div className='fullScreenHeight d-flex flex-column align-items-center justify-content-center' >
+        <div className={`d-flex flex-column align-items-center justify-content-center ${isEdit ? '' : 'fullScreenHeight'}`} >
         <div className="card text-center text-white bg-dark p-4">
           <div className="card-body">
-    
-            <h5>Faça seu {isLogin ? 'Login' : 'Cadastro'}</h5>
+
+            {
+              isEdit ? <h5>Editar cliente</h5> :
+              <h5>Faça seu {isLogin ? 'Login' : 'Cadastro'}</h5>
+            }
     
             <form className='pt-3'>
+              
+              {
+                isLogin ? null :
+                <><label htmlFor="nome">Nome</label>
+                <input type="text" className="form-control" value={isEdit ? cliente?.nome : ''} placeholder="João da Silva"/> </>
+              }
+
+              <label htmlFor="email">Email</label>
+              <input type="email" className="form-control" value={isEdit ? cliente?.email : ''} placeholder="exemplo@exemplo.com"/>
+              
+              {
+                isEdit ? null :
+                <><label htmlFor="senha">Senha</label>
+                <input type="password" className="form-control"/></>
+              }
     
-              <label htmlFor="exampleInputEmail1">Email</label>
-              <input type="email" className="form-control" placeholder="exemplo@exemplo.com"/>
-    
-              <label htmlFor="exampleInputEmail1">Senha</label>
-              <input type="password" className="form-control"/>
-    
-              <button type="button" className="fullWidth mt-2 btn btn-primary">
+              <button type="button" onClick={() => {
+                if(props.setEdit && isEdit){
+                  return props.setEdit(-1)
+                }else{
+                  return router.push('/home')
+                }
+              }} 
+              className="fullWidth mt-2 btn btn-primary">
                   {
-                      isLogin ?
-                      "Logar" :
-                      "Cadastrar"
+                      isLogin ? "Logar" : isEdit ? "Salvar" : "Cadastrar"
                   }
               </button>
     
               {
+                isEdit ? null :
                 isLogin ? 
                 <Link href='/cadastro'>
                     Cadastrar-se
                 </Link> :
                 <Link href='/'>
-                    Voltar
+                    Logar
                 </Link>
               }
     
