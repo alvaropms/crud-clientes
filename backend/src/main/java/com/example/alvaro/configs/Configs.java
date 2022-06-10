@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class Configs implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry){
-        registry.addViewController("/hello").setViewName("forward:/hello.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
 
     @Override

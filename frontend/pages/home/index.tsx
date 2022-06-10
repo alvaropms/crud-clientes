@@ -4,7 +4,7 @@ import ClientRow from "../../components/clientRow"
 import FormUsuario from "../../components/formUsuario"
 import Navbar from "../../components/navbar"
 import { Cliente } from "../../models/client.model"
-import { atualizar, excluir, listar } from "./functions"
+import { atualizar, excluir, useListar } from "../../functions/home"
 
 const Home: NextPage = () => {
 
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
         atualizar(nome, email, id, setEdit, setCliente, clientes)
     }
 
-    listar(setCliente)
+    useListar(setCliente)
 
     return(
         <>

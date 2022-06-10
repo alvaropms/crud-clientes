@@ -41,7 +41,7 @@ export function atualizar(nome: string,
     })
   }
 
-export function listar(setCliente: Function){
+export function useListar(setCliente: Function){
     useEffect(() => {
       service.listar().then((resp) => {
           setCliente(resp)
@@ -49,5 +49,5 @@ export function listar(setCliente: Function){
           alert("Erro ao buscar clientes")
           alert(error.response.data)
       })
-    }, [])
+    }, [setCliente])
 }

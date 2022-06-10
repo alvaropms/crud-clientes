@@ -1,6 +1,5 @@
 import type { NextPage } from "next"
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Cliente } from "../../models/client.model"
 import { cadastrar, logar } from "./functions"
@@ -31,7 +30,7 @@ const FormUsuario: NextPage<{
       setNome(cliente?.nome!)
       setEmail(cliente?.email!)
     }
-  }, [])
+  }, [isEdit, cliente?.nome, cliente?.email])
 
     return(
         <div className={`d-flex flex-column align-items-center justify-content-center ${isEdit ? 'mb-3' : 'fullScreenHeight'}`} >
