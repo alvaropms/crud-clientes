@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Cliente } from "../../models/client.model"
-import { cadastrar } from "./functions"
+import { cadastrar, logar } from "./functions"
 
 const FormUsuario: NextPage<{
   page: String, cliente?: Cliente, atualizar?: Function
@@ -33,10 +33,8 @@ const FormUsuario: NextPage<{
     }
   }, [])
 
-  const router = useRouter()
-
     return(
-        <div className={`d-flex flex-column align-items-center justify-content-center ${isEdit ? '' : 'fullScreenHeight'}`} >
+        <div className={`d-flex flex-column align-items-center justify-content-center ${isEdit ? 'mb-3' : 'fullScreenHeight'}`} >
         <div className="card text-center text-white bg-dark p-4">
           <div className="card-body">
 
@@ -63,11 +61,11 @@ const FormUsuario: NextPage<{
               }
     
               <button type="button" onClick={() => {
-                if(atualizar && isEdit){
-                  return atualizar(nome, email, cliente?.id)
+                if(isEdit){
+                  return atualizar!(nome, email, cliente?.id)
                 }else{
                   if(isLogin){
-                    return router.push('/home')
+                    return logar(email, senha)
                   }
                   return cadastrar(nome, email, senha)
                 }

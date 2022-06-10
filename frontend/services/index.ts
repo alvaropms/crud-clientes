@@ -36,7 +36,12 @@ export class Services{
     }
 
     async pesquisar(nome: string){
-        return await this.api.get('/pesquisar',{params: {nome}})
+        const data = await this.api.get('/pesquisar',{params: {nome}})
+        return this.toCliente(data)
+    }
+
+    async logar(email: string, senha: string){
+        return await this.api.post('/logar', {email, senha})
     }
 }
 

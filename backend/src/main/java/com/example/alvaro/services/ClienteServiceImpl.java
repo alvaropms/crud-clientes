@@ -1,9 +1,11 @@
 package com.example.alvaro.services;
 
 import com.example.alvaro.dtos.ClienteDTO;
+import com.example.alvaro.dtos.ClienteLoginDTO;
 import com.example.alvaro.dtos.ClienteWithIdDTO;
-import com.example.alvaro.mapper.cliente.ClienteWithIdMapper;
+import com.example.alvaro.mapper.cliente.ClienteLoginMapper;
 import com.example.alvaro.mapper.cliente.ClienteMapper;
+import com.example.alvaro.mapper.cliente.ClienteWithIdMapper;
 import com.example.alvaro.models.Cliente;
 import com.example.alvaro.repositorys.ClienteRepository;
 import com.example.alvaro.services.interfaces.ClienteService;
@@ -21,6 +23,8 @@ public class ClienteServiceImpl implements ClienteService {
     private ClienteMapper clienteMapper;
     @Autowired
     private ClienteWithIdMapper clienteWithIdMapper;
+    @Autowired
+    private ClienteLoginMapper clienteLoginMapper;
 
     @Override
     public List<ClienteWithIdDTO> getAllClientes() {
@@ -48,6 +52,12 @@ public class ClienteServiceImpl implements ClienteService {
         List<Cliente> entity = clienteRepository.findByNome(nome);
         List<ClienteWithIdDTO> dto = clienteWithIdMapper.toDto(entity);
         return dto;
+    }
+
+    @Override
+    public List<ClienteLoginDTO> getClienteByEmailAndSenha(String email, String senha) {
+        List<Cliente> entity = clienteRepository.findByEmailAndSenha(email, senha);
+        return clienteLoginMapper.toDto(entity);
     }
 
     @Override

@@ -19,9 +19,7 @@ const Home: NextPage = () => {
         atualizar(nome, email, id, setEdit, setCliente, clientes)
     }
 
-    useEffect(() => {
-        listar(setCliente)
-    }, [])
+    listar(setCliente)
 
     return(
         <>

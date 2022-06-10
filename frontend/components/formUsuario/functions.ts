@@ -15,3 +15,13 @@ export function cadastrar(nome: string, email: string, senha: string){
   })
 
 }
+
+export function logar(email: string, senha: string){
+  service.logar(email, senha).then((msg) => {
+    alert(msg.data)
+    router.push('/home')
+  }).catch((error) => {
+    alert("Erro ao logar")
+    alert(error.response.data)
+  })
+}

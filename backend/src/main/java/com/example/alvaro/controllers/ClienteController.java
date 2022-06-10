@@ -1,6 +1,7 @@
 package com.example.alvaro.controllers;
 
 import com.example.alvaro.dtos.ClienteDTO;
+import com.example.alvaro.dtos.ClienteLoginDTO;
 import com.example.alvaro.dtos.ClienteWithIdDTO;
 import com.example.alvaro.services.ClienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,17 @@ public class ClienteController {
         List<ClienteWithIdDTO> cliente = clienteService.getClienteByNome(nome);
 
         return new ResponseEntity<>(cliente.get(0), HttpStatus.OK);
+    }
+
+    @PostMapping("/logar")
+    public ResponseEntity logar(@RequestBody ClienteLoginDTO credenciais){
+        List<ClienteLoginDTO> clientes = clienteService
+                .getClienteByEmailAndSenha(credenciais.getEmail(), credenciais.getSenha());
+
+        if(clientes.isEmpty()){
+            return new ResponseEntity("Credenciais incorretas", HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>("Logado com sucesso", HttpStatus.OK);
     }
 }

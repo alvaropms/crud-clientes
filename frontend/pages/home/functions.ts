@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Cliente } from "../../models/client.model"
 import service from "../../services"
 
@@ -41,10 +42,12 @@ export function atualizar(nome: string,
   }
 
 export function listar(setCliente: Function){
-    service.listar().then((resp) => {
-        setCliente(resp)
-    }).catch((error) => {
-        alert("Erro ao buscar clientes")
-        alert(error.response.data)
-    })
+    useEffect(() => {
+      service.listar().then((resp) => {
+          setCliente(resp)
+      }).catch((error) => {
+          alert("Erro ao buscar clientes")
+          alert(error.response.data)
+      })
+    }, [])
 }
