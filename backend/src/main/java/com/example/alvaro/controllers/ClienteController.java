@@ -1,6 +1,7 @@
 package com.example.alvaro.controllers;
 
 import com.example.alvaro.dtos.ClienteDTO;
+import com.example.alvaro.dtos.ClienteWithIdDTO;
 import com.example.alvaro.services.ClienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class ClienteController {
     @PostMapping("/cadastrar")
     public ResponseEntity<String> cadastrar(@RequestBody ClienteDTO cliente) {
 
-        List<ClienteDTO> clientes = clienteService.getClienteByNome(
-                cliente.getNome());
+        List<ClienteWithIdDTO> clientes = clienteService.getClienteByEmail(
+                cliente.getEmail());
 
         if(!clientes.isEmpty()){
             return new ResponseEntity("Cliente já cadastrado", HttpStatus.BAD_REQUEST);
@@ -32,8 +33,8 @@ public class ClienteController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<ClienteDTO>> listar(){
-        List<ClienteDTO> clientes = clienteService.getAllClientes();
+    public ResponseEntity<List<ClienteWithIdDTO>> listar(){
+        List<ClienteWithIdDTO> clientes = clienteService.getAllClientes();
         return new ResponseEntity(clientes, HttpStatus.OK);
     }
 
@@ -42,5 +43,27 @@ public class ClienteController {
         clienteService.deleteCliente(id);
 
         return new ResponseEntity("Deletado com sucesso", HttpStatus.OK);
+    }
+    
+    @PutMapping("/atualizar")
+    public ResponseEntity<String> atualizar(@RequestBody ClienteWithIdDTO cliente){
+        List<ClienteWithIdDTO> email = clienteService.getClienteByEmail(cliente.getEmail());
+
+        if(email.size() > 0 && !email.get(0).getId().equals(cliente.getId())){
+            return new ResponseEntity<>("Email já cadastrado no sistema", HttpStatus.BAD_REQUEST);
+        }
+
+        List<ClienteWithIdDTO> aux = clienteService.getClienteById(cliente.getId());
+        cliente.setSenha(aux.get(0).getSenha());
+        clienteService.atualizar(cliente);
+
+        return new ResponseEntity("Atualizado com sucesso", HttpStatus.OK);
+    }
+
+    @GetMapping("/pesquisar")
+    public ResponseEntity<ClienteWithIdDTO> pesquisar(@RequestParam String nome){
+        List<ClienteWithIdDTO> cliente = clienteService.getClienteByNome(nome);
+
+        return new ResponseEntity<>(cliente.get(0), HttpStatus.OK);
     }
 }

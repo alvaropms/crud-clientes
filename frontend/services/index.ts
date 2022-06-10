@@ -31,7 +31,13 @@ export class Services{
         return await this.api.delete('/deletar/'+id)
     }
 
+    async atualizar(cliente: Cliente){
+        return await this.api.put('/atualizar', cliente)
+    }
 
+    async pesquisar(nome: string){
+        return await this.api.get('/pesquisar',{params: {nome}})
+    }
 }
 
 const service = new Services

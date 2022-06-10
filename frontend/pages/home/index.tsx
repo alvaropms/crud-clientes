@@ -4,20 +4,23 @@ import ClientRow from "../../components/clientRow"
 import FormUsuario from "../../components/formUsuario"
 import Navbar from "../../components/navbar"
 import { Cliente } from "../../models/client.model"
-import services from "../../services"
+import { atualizar, excluir, listar } from "./functions"
 
 const Home: NextPage = () => {
 
     const [clientes, setCliente] = useState<Cliente[]>([])
     const [edit, setEdit] = useState(-1)
 
+    function excluirImpl(id: number){
+        excluir(id, setCliente, clientes)
+    }
+
+    function atualizarImpl(nome: string, email: string, id: number){
+        atualizar(nome, email, id, setEdit, setCliente, clientes)
+    }
+
     useEffect(() => {
-        services.listar().then((resp) => {
-            setCliente(resp)
-        }).catch((error) => {
-            alert("Erro ao buscar clientes")
-            alert(error)
-        })
+        listar(setCliente)
     }, [])
 
     return(
@@ -37,13 +40,13 @@ const Home: NextPage = () => {
                 </thead>
                 <tbody>
                     {
-                        clientes.map(cliente => <ClientRow key={cliente.id} cliente={cliente} setEdit={setEdit}/>)
+                        clientes.map(cliente => <ClientRow key={cliente.id} excluir={excluirImpl} cliente={cliente} setEdit={setEdit}/>)
                     }
                 </tbody>
             </table>
             {
                 edit < 0 ? null :
-                <FormUsuario page={'edit'} cliente={clientes.find((cliente => cliente.id === edit))} setEdit={setEdit}/>
+                <FormUsuario page={'edit'} cliente={clientes.find((cliente => cliente.id === edit))} atualizar={atualizarImpl}/>
             }
         </div>
         </>
